@@ -5,6 +5,8 @@ import { DashboardToggle } from "@/components/dashboard-toggle";
 import { WorkerInterviewActions } from "@/components/worker-interview-actions";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function WorkerDashboardPage() {
   await ensureDemoUsers();
 

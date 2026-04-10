@@ -5,6 +5,8 @@ import { ApplyFlow } from "./apply-flow";
 
 type Params = { params: Promise<{ jobId: string }> };
 
+export const dynamic = "force-dynamic";
+
 export default async function ApplyPage(context: Params) {
   const { jobId } = await context.params;
 

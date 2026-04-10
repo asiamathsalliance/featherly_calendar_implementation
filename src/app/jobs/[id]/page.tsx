@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 
 type Params = { params: Promise<{ id: string }> };
 
+export const dynamic = "force-dynamic";
+
 export default async function JobDetailPage(context: Params) {
   await ensureDemoUsers();
   const { id } = await context.params;

@@ -4,6 +4,8 @@ import { ClientJobReviewList } from "@/components/client-job-review-list";
 import { DashboardToggle } from "@/components/dashboard-toggle";
 import { NewJobForm } from "../provider/new-job-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function ClientDashboardPage() {
   await ensureDemoUsers();
   const jobs = await prisma.job.findMany({
