@@ -30,17 +30,16 @@ export function Nav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 sm:gap-8 sm:px-8">
         <Link
           href="/"
-          className="flex cursor-pointer items-center gap-3 text-xl font-bold tracking-tight text-teal-800 dark:text-teal-300"
+          className="flex cursor-pointer items-center"
         >
           <Image
-            src="/favicon-featherly.png"
-            alt=""
-            width={36}
-            height={36}
-            className="h-9 w-9 shrink-0 rounded-lg object-contain"
+            src="/featherly-wordmark.png"
+            alt="Featherly"
+            width={220}
+            height={56}
+            className="h-10 w-auto shrink-0 object-contain sm:h-11"
             priority
           />
-          <span>Featherly</span>
         </Link>
         <nav className="flex flex-wrap items-center gap-3 text-[15px] font-medium sm:gap-4">
           {links.map((link, i) => (
