@@ -29,6 +29,16 @@ body {
 }
 
 @layer base {
+  button:not(:disabled),
+  input[type="button"]:not(:disabled),
+  input[type="submit"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   /* Muted but readable placeholder / hint text (forms) — zinc-300 / zinc-500 */
   input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(
       [type="file"]
@@ -136,6 +146,10 @@ body {
 }
 
 .fc .fc-event {
+  cursor: pointer;
+}
+
+.fc .fc-button {
   cursor: pointer;
 }
 

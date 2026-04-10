@@ -155,7 +155,7 @@ export function NewJobForm() {
           }}
         >
           <div
-            className="w-full max-w-2xl rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
+            className="w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
             role="dialog"
             aria-modal="true"
             aria-label={
@@ -168,66 +168,76 @@ export function NewJobForm() {
             onClick={(e) => e.stopPropagation()}
           >
             {loading ? (
-              <div className="flex min-h-[320px] flex-col items-center justify-center text-center">
+              <div className="flex min-h-[280px] flex-col items-center justify-center px-6 py-10 text-center">
                 <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-teal-200 border-t-teal-600 dark:border-teal-900 dark:border-t-teal-400" />
                 <p className="mt-6 text-[17px] font-semibold text-zinc-900 dark:text-zinc-100">
-                  Posting new jobs on the calnder...
+                  Posting your job to the calendar…
                 </p>
               </div>
             ) : posted ? (
-              <div className="grid min-h-[320px] content-center gap-5">
-                <div className="rounded-xl border border-teal-200 bg-teal-50/80 p-5 dark:border-teal-900 dark:bg-teal-950/40">
-                  <h3 className="text-xl font-semibold text-teal-900 dark:text-teal-100">
-                    Job listing posted!
+              <div className="flex min-h-[320px] flex-col">
+                <div className="border-b border-zinc-200 px-6 pb-4 pt-6 dark:border-zinc-700">
+                  <h3 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+                    Job listing posted
                   </h3>
-                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
-                    Your job is live. Workers can apply from the calendar and job pages.
+                  <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                    Your shift is live and visible on the calendar.
                   </p>
-                  <div className="mt-4 flex flex-wrap gap-4 text-sm">
-                    <Link
-                      href="/dashboard/client"
-                      className="font-medium text-teal-700 underline hover:text-teal-900 dark:text-teal-400"
-                    >
-                      Back to client dashboard
-                    </Link>
-                    <Link
-                      href="/calendar"
-                      className="font-medium text-teal-700 underline hover:text-teal-900 dark:text-teal-400"
-                    >
-                      View calendar
-                    </Link>
-                    <Link href="/" className="font-medium text-zinc-600 underline dark:text-zinc-400">
-                      Home
-                    </Link>
-                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPosted(false);
-                      setShowForm(true);
-                    }}
-                    className="cursor-pointer rounded-full bg-teal-600 px-4 py-2 text-sm font-bold text-white hover:bg-teal-700"
-                  >
-                    Post another listing
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPosted(false);
-                      setShowForm(false);
-                    }}
-                    className="cursor-pointer rounded-full border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-600"
-                  >
-                    Close
-                  </button>
+                <div className="px-6 pb-6 pt-5">
+                  <div className="rounded-xl border border-teal-200/90 bg-teal-50/70 px-4 py-4 dark:border-teal-800/80 dark:bg-teal-950/35">
+                    <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                      Workers can open the listing from the calendar or job pages to apply.
+                    </p>
+                    <nav className="mt-4 flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
+                      <Link
+                        href="/dashboard/client"
+                        className="cursor-pointer font-medium text-teal-700 underline-offset-2 hover:underline dark:text-teal-400"
+                      >
+                        Client dashboard
+                      </Link>
+                      <Link
+                        href="/calendar"
+                        className="cursor-pointer font-medium text-teal-700 underline-offset-2 hover:underline dark:text-teal-400"
+                      >
+                        View calendar
+                      </Link>
+                      <Link
+                        href="/"
+                        className="cursor-pointer font-medium text-zinc-600 underline-offset-2 hover:underline dark:text-zinc-400"
+                      >
+                        Home
+                      </Link>
+                    </nav>
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPosted(false);
+                        setShowForm(true);
+                      }}
+                      className="cursor-pointer rounded-full bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-700"
+                    >
+                      Post another listing
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPosted(false);
+                        setShowForm(false);
+                      }}
+                      className="cursor-pointer rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
               <form
                 onSubmit={onSubmit}
-                className="grid max-h-[80vh] gap-5 overflow-y-auto"
+                className="grid max-h-[80vh] gap-5 overflow-y-auto p-6"
               >
                 <h3 className="text-xl font-semibold">Post a new job</h3>
                 <label className="text-sm">

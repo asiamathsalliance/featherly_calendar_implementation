@@ -179,7 +179,7 @@ export function JobCalendar({
             key={t}
             type="button"
             onClick={() => toggleTag(t)}
-            className={`rounded-full border px-3 py-1.5 text-left text-[11px] font-medium leading-snug sm:text-xs ${
+            className={`cursor-pointer rounded-full border px-3 py-1.5 text-left text-[11px] font-medium leading-snug sm:text-xs ${
               tags.includes(t)
                 ? "border-teal-600 bg-teal-50 text-teal-900 dark:bg-teal-950 dark:text-teal-100"
                 : "border-zinc-300 dark:border-zinc-600"
@@ -192,7 +192,7 @@ export function JobCalendar({
       {error && (
         <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
       )}
-      <div className="relative fc-theme-standard min-h-[560px] rounded-xl border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="relative fc-theme-standard min-h-[min(88vh,920px)] rounded-xl border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
         {loading && !calendarReady ? (
           <p className="p-4 text-sm text-zinc-500">Loading calendar…</p>
         ) : (
@@ -207,11 +207,11 @@ export function JobCalendar({
             }}
             allDaySlot={false}
             slotMinTime="09:00:00"
-            slotMaxTime="17:00:00"
+            slotMaxTime="22:00:00"
             slotDuration="00:30:00"
             slotLabelInterval="01:00:00"
             snapDuration="00:30:00"
-            height="auto"
+            height={820}
             contentHeight="auto"
             dayMaxEvents={4}
             fixedWeekCount={false}

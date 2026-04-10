@@ -30,7 +30,7 @@ export function Nav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 sm:gap-8 sm:px-8">
         <Link
           href="/"
-          className="flex items-center gap-3 text-xl font-bold tracking-tight text-teal-800 dark:text-teal-300"
+          className="flex cursor-pointer items-center gap-3 text-xl font-bold tracking-tight text-teal-800 dark:text-teal-300"
         >
           <Image
             src="/favicon-featherly.png"
@@ -46,7 +46,7 @@ export function Nav() {
           {links.map((link, i) => (
             <div key={link.href} className="flex items-center gap-3 sm:gap-4">
               <Link
-                className={`group relative inline-block pb-0.5 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:text-teal-700 dark:hover:text-teal-400 ${
+                className={`group relative inline-block cursor-pointer pb-0.5 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:text-teal-700 dark:hover:text-teal-400 ${
                   link.active ? "text-teal-800 dark:text-teal-300" : "text-zinc-700 dark:text-zinc-300"
                 }`}
                 href={link.href}
