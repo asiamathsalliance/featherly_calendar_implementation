@@ -22,5 +22,215 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+@layer base {
+  /* Muted but readable placeholder / hint text (forms) — zinc-300 / zinc-500 */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(
+      [type="file"]
+    ):not([type="hidden"])::placeholder,
+  textarea::placeholder {
+    color: rgb(212 212 216);
+    opacity: 1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(
+        [type="file"]
+      ):not([type="hidden"])::placeholder,
+    textarea::placeholder {
+      color: rgb(113 113 122);
+    }
+  }
+
+  /* datetime-local: empty field reads like a placeholder (WebKit/Blink) */
+  input[type="datetime-local"]:invalid {
+    color: rgb(212 212 216);
+  }
+
+  input[type="datetime-local"]:invalid::-webkit-datetime-edit,
+  input[type="datetime-local"]:invalid::-webkit-datetime-edit-fields-wrapper {
+    color: rgb(212 212 216);
+  }
+
+  input[type="datetime-local"]:valid {
+    color: inherit;
+  }
+
+  input[type="datetime-local"]:valid::-webkit-datetime-edit {
+    color: inherit;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    input[type="datetime-local"]:invalid {
+      color: rgb(113 113 122);
+    }
+
+    input[type="datetime-local"]:invalid::-webkit-datetime-edit,
+    input[type="datetime-local"]:invalid::-webkit-datetime-edit-fields-wrapper {
+      color: rgb(113 113 122);
+    }
+  }
+
+  /* Select: first disabled option (“Select…”) matches muted placeholder */
+  select:required:invalid {
+    color: rgb(212 212 216);
+  }
+
+  select:required:valid {
+    color: inherit;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    select:required:invalid {
+      color: rgb(113 113 122);
+    }
+  }
+
+  select option {
+    color: rgb(24 24 27);
+    background-color: rgb(255 255 255);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    select option {
+      color: rgb(244 244 245);
+      background-color: rgb(24 24 27);
+    }
+  }
+}
+
+/* Auto-scrolling review strip (homepage) */
+@keyframes home-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.home-marquee-track {
+  animation: home-marquee 50s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-marquee-track {
+    animation: none;
+  }
+}
+
+/* FullCalendar (v6 ships layout via JS; minimal theme hooks) */
+.fc {
+  --fc-border-color: rgb(228 228 231);
+  --fc-button-bg-color: rgb(13 148 136);
+  --fc-button-border-color: rgb(13 148 136);
+  --fc-button-hover-bg-color: rgb(15 118 110);
+  --fc-button-hover-border-color: rgb(15 118 110);
+  --fc-today-bg-color: rgba(13, 148, 136, 0.08);
+  font-size: 0.9375rem;
+}
+
+.fc .fc-event {
+  cursor: pointer;
+}
+
+/* View switcher: outline when inactive, filled teal + white text when active */
+.fc .fc-button-primary {
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: rgb(212 212 216);
+  --fc-button-text-color: #171717;
+  --fc-button-hover-bg-color: rgba(13, 148, 136, 0.1);
+  --fc-button-hover-border-color: rgb(161 161 170);
+  --fc-button-hover-text-color: #171717;
+  --fc-button-active-bg-color: #0d9488;
+  --fc-button-active-border-color: #0d9488;
+  --fc-button-active-text-color: #ffffff;
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  --fc-button-bg-color: #0d9488;
+  --fc-button-border-color: #0d9488;
+  --fc-button-text-color: #ffffff;
+  --fc-button-hover-bg-color: #0f766e;
+  --fc-button-hover-border-color: #0f766e;
+  --fc-button-hover-text-color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fc .fc-button-primary {
+    --fc-button-border-color: rgb(82 82 91);
+    --fc-button-text-color: #fafafa;
+    --fc-button-hover-text-color: #fafafa;
+  }
+}
+
+/* Worker preference quiz — custom range */
+.preference-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    rgb(228 228 231) 0%,
+    rgb(204 251 241) 50%,
+    rgb(20 184 166) 100%
+  );
+  height: 0.75rem;
+}
+.preference-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 9999px;
+  background: linear-gradient(145deg, #0d9488, #059669);
+  border: 3px solid white;
+  box-shadow: 0 2px 12px rgba(13, 148, 136, 0.45);
+  cursor: pointer;
+  margin-top: -3px;
+}
+.preference-range::-moz-range-thumb {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 9999px;
+  background: linear-gradient(145deg, #0d9488, #059669);
+  border: 3px solid white;
+  box-shadow: 0 2px 12px rgba(13, 148, 136, 0.45);
+  cursor: pointer;
+}
+.preference-range::-moz-range-track {
+  background: transparent;
+  border: none;
+}
+@media (prefers-color-scheme: dark) {
+  .preference-range {
+    background: linear-gradient(
+      to right,
+      rgb(39 39 42) 0%,
+      rgb(19 78 74 / 0.5) 45%,
+      rgb(13 148 136 / 0.85) 100%
+    );
+  }
+  .preference-range::-webkit-slider-thumb {
+    border-color: rgb(24 24 27);
+  }
+  .preference-range::-moz-range-thumb {
+    border-color: rgb(24 24 27);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .fc {
+    --fc-border-color: rgb(63 63 70);
+    --fc-page-bg-color: rgb(24 24 27);
+    --fc-neutral-bg-color: rgb(39 39 42);
+    color: rgb(244 244 245);
+  }
 }

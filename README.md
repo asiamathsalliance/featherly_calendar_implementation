@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Featherly — Calendar & matching (MVP)
 
-## Getting Started
+Next.js app with Google sign-in, PostgreSQL, FullCalendar job listings, screening quizzes (template by default; optional Ollama), and provider application review.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 20+
+- PostgreSQL 16+ (or Docker — see `docker-compose.yml`)
+- Optional: [Ollama](https://ollama.com/) only if you set `OLLAMA_ENABLED=true` in `.env`; otherwise quizzes use built-in template questions (no LLM).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install dependencies**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. **Environment**
 
-To learn more about Next.js, take a look at the following resources:
+   Copy `.env.example` to `.env` and set:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - `DATABASE_URL` — PostgreSQL connection string
+   - `AUTH_SECRET` — run `openssl rand -base64 32`
+   - `AUTH_URL` — e.g. `http://localhost:3000`
+   - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — [Google OAuth credentials](https://console.cloud.google.com/apis/credentials) with authorized redirect URI `http://localhost:3000/api/auth/callback/google` (use the same host/port you run `npm run dev` on, e.g. `3001` if Next chose another port)
+   - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` — set to the **same value** as `GOOGLE_CLIENT_ID`. Middleware runs on Edge, which often cannot read non-`NEXT_PUBLIC_` env vars; without this, Google may show “Missing required parameter: client_id”.
+   - Optional: `PROVIDER_EMAILS` — comma-separated emails that should get the `PROVIDER` role on sign-in (otherwise users default to support workers)
+   - Optional: `OLLAMA_ENABLED=true`, plus `OLLAMA_HOST`, `OLLAMA_MODEL` to generate quizzes via local Ollama (default is off; template questions only)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Database**
 
-## Deploy on Vercel
+   ```bash
+   docker compose up -d   # if using bundled Postgres
+   npm run db:push
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Seed demo jobs (optional)**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   Sign in once with a Google account whose email is listed in `PROVIDER_EMAILS`, then:
+
+   ```bash
+   npm run db:seed
+   ```
+
+   This creates sample job listings for the first provider user in the database.
+
+5. **Run the app**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000).
+
+## Roles & flows
+
+- **Support worker (default):** Sign in with Google → onboarding (bio / fun fact) → **Calendar** → open a job → **Apply** (quiz) → track status on **Worker dashboard**.
+- **Provider:** Add your email to `PROVIDER_EMAILS`, sign in → **Provider dashboard** → post jobs → **View applicants** → accept / reject / request interview.
+
+## API (MVP)
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| GET/POST | `/api/jobs` | List (filters: `from`, `to`, `tags`) / create (provider) |
+| GET | `/api/jobs/[id]` | Job detail |
+| GET/POST | `/api/applications` | Worker: list mine / create draft |
+| GET/PATCH | `/api/applications/[id]` | Get application / submit quiz answers (`PENDING`) |
+| PATCH | `/api/applications/[id]/decision` | Provider decision |
+| POST | `/api/quiz/generate` | Generate/store quiz for an application |
+| PATCH | `/api/user/profile` | Profile + complete onboarding |
+
+Auth routes are handled by Auth.js at `/api/auth/*`.
+
+## Scripts
+
+- `npm run db:generate` — Prisma client
+- `npm run db:push` — sync schema to DB
+- `npm run db:seed` — seed demo jobs (requires a provider user)
+
+## Tech notes
+
+- Prisma ORM with PostgreSQL; Prisma 7 uses the `@prisma/adapter-pg` driver.
+- Auth.js (NextAuth v5) with the Prisma adapter and Google provider.
+- FullCalendar for the worker job calendar.
+- Quiz generation calls Ollama’s HTTP API (`/api/generate`); JSON is validated with Zod; failures use static fallback questions.
